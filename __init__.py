@@ -18,11 +18,11 @@ changepass_put_args.add_argument("oldpass", type=str, help="Old/current login pa
 changepass_put_args.add_argument("newpass", type=str, help="New/future login password", required=True)
 changepass_put_args.add_argument("newpass1", type=str, help="Duplicate of newpass", required=True)
 
-# addtikkie_put_args = reqparse.RequestParser()
-# addtikkie_put_args.add_argument("name", type=str, help="What is the tikkie for?", required=True)
-# addtikkie_put_args.add_argument("url", type=str, help="The url of the tikkie", required=True)
-# addtikkie_put_args.add_argument("payers", type=str, help="People who have to pay", required=True)
-# addtikkie_put_args.add_argument("date", type=str, help="The date the money was spend", required=True)
+addtikkie_put_args = reqparse.RequestParser()
+addtikkie_put_args.add_argument("name", type=str, help="What is the tikkie for?", required=True)
+addtikkie_put_args.add_argument("url", type=str, help="The url of the tikkie", required=True)
+addtikkie_put_args.add_argument("payers", type=str, help="People who have to pay", required=True)
+addtikkie_put_args.add_argument("date", type=str, help="The date the money was spend", required=True)
 
 class LogIn(Resource):
 	def post(self):
@@ -54,11 +54,16 @@ class ChangePassword(Resource):
 
 		return {"Password change": "Succes"}, 200
 
-# class AddTikkie(Resource):
-# 	def put(self):
-
+class AddTikkie(Resource):
+	def put(self):
+		args = addtikkie_put_args.parse_args()
+		name, url, payers, date = args["name"], args["url"], args["payers"].split(","), args["date"]
+		print(payers)
+		return payers
 
 api.add_resource(LogIn, "/login")
 api.add_resource(ChangePassword, "/changepass")
+api.add_resource(AddTikkie, "/addtikkie")
+
 if __name__ == "__main__":
 	app.run(debug=True)

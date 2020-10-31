@@ -38,11 +38,12 @@ class LogIn(Resource):
 		name, password = args["name"], args["password"]
 
 		if not check_login(name, password):
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		user_data = get_data("users")
 		user_info = user_data[name]
-		return user_info, 200
+
+		return user_info, 200, {"Access-Control-Allow-Origin": "*"}
 
 class ChangePassword(Resource):
 	def put(self):
@@ -50,16 +51,16 @@ class ChangePassword(Resource):
 		name, oldpass, newpass, newpass1 = args["name"], args["oldpass"], args["newpass"], args["newpass1"]
 
 		if newpass != newpass1:
-			return {"Authorization error": "New passwords don't are not the same!"}, 403
+			return {"Authorization error": "New passwords don't are not the same!"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		if not check_login(name, oldpass):
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		user_data = get_data("users")
 		user_data[name]["password"] = password_hasher(newpass)
 		put_data("users", user_data)
 
-		return {"Password change": "Succes"}, 200
+		return {"Password change": "Succes"}, 200, {"Access-Control-Allow-Origin": "*"}
 
 class AddTikkie(Resource):
 	def put(self):
@@ -71,10 +72,10 @@ class AddTikkie(Resource):
 		user_data = get_data("users")
 
 		if not check_login(name, password):
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		if set(t_payers) & set(user_data.keys()) != set(t_payers):
-			return {"Bad request": "Not all payers are users"}, 400
+			return {"Bad request": "Not all payers are users"}, 400, {"Access-Control-Allow-Origin": "*"}
 
 		if len(tikkies) != 0:
 			t_id = tikkies[len(tikkies)-1]["id"]+1
@@ -99,7 +100,7 @@ class AddTikkie(Resource):
 		
 		put_data("users", user_data)
 
-		return {"Tikkie added": "Succes"}, 201
+		return {"Tikkie added": "Succes"}, 201, {"Access-Control-Allow-Origin": "*"}
 
 class Payed(Resource):
 	def post(self):
@@ -110,15 +111,15 @@ class Payed(Resource):
 		tikkies = get_data("tikkies")
 
 		if not check_login(name, password):
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		try:
 			t_id = int(t_id)
 		except ValueError:
-			return {"Error": "Tikkie_id not convertable to int"}, 400
+			return {"Error": "Tikkie_id not convertable to int"}, 400, {"Access-Control-Allow-Origin": "*"}
 
 		if name not in tikkies[t_id]["unpaid"]:
-			return {"Exception": "Tikkie already paid!"}, 202
+			return {"Exception": "Tikkie already paid!"}, 202, {"Access-Control-Allow-Origin": "*"}
 
 		tikkies[t_id]["unpaid"].remove(name)
 		tikkies[t_id]["paid"].append(name)
@@ -128,7 +129,7 @@ class Payed(Resource):
 
 		put_data("tikkies", tikkies)
 		put_data("users", user_data)
-		
+
 		return {"Tikkie paid": "Succes"}
 
 api.add_resource(LogIn, "/login")

@@ -1,3 +1,5 @@
+import json
+
 from flask import Flask
 from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
@@ -34,10 +36,12 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 db = SQLAlchemy(app)
 
+
 class User(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
 	name = db.Column(db.String(50), unique=True)
 	password = db.Column(db.String(100))
+
 
 class Tikkie(db.Model):
 	id = db.Column(db.Integer, primary_key=True)
@@ -48,16 +52,18 @@ class Tikkie(db.Model):
 	paid = db.Column(db.String(300), default="")
 	unpaid = db.Column(db.String(300))
 
+
 class LogIn(Resource):
 	def post(self):
 		args = login_post_args.parse_args()
-		name, password = args["name"], password_hasher(args["password"])
+		name, password = args["name"], hash_password(args["password"])
 
 		user = User.query.filter_by(name=name).filter_by(password=password).first()
 
 		if user is None:
 			return {"Authorization error": "Bad credentials"}, 403
 		return json.dumps(dict(name=user.name, password=user.password)), 200
+
 
 class ChangePassword(Resource):
 	def put(self):
@@ -67,22 +73,24 @@ class ChangePassword(Resource):
 		if newpass != newpass1:
 			return {"Authorization error": "New passwords are not the same!"}, 403
 
-		user = User.query.filter_by(name=name).filter_by(password=password_hasher(oldpass)).first()
+		user = User.query.filter_by(name=name).filter_by(password=hash_password(oldpass)).first()
 
 		if user is None:
 			return {"Authorization error": "Bad credentials"}, 403
 
-		user.password = password_hasher(newpass)
+		user.password = hash_password(newpass)
 		db.session.commit()
 
 		return {"Password change": "Succes"}, 200
 
+
 class AddTikkie(Resource):
 	def put(self):
 		args = addtikkie_put_args.parse_args()
-		name, password, t_name, t_url, t_payers = args["name"], args["password"], args["tikkiename"], args["url"], args["payers"].split(",")
+		name, password = args["name"], args["password"]
+		t_name, t_url, t_payers = args["tikkiename"], args["url"], args["payers"].split(",")
 
-		if User.query.filter_by(name=name).filter_by(password=password_hasher(password)).first() is None:
+		if User.query.filter_by(name=name).filter_by(password=hash_password(password)).first() is None:
 			return {"Authorization error": "Bad credentials"}, 403
 
 		users = map(lambda user: user.name, User.query.all())
@@ -96,12 +104,13 @@ class AddTikkie(Resource):
 
 		return {"success": True, "id": tikkie.id}, 201
 
+
 class Payed(Resource):
 	def post(self):
 		args = pay_post_args.parse_args()
 		name, password, t_id = args["name"], args["password"], args["tikkieid"]
 
-		if User.query.filter_by(name=name).filter_by(password=password_hasher(password)).first() is None:
+		if User.query.filter_by(name=name).filter_by(password=hash_password(password)).first() is None:
 			return {"Authorization error": "Bad credentials"}, 403
 
 		try:
@@ -129,6 +138,7 @@ class Payed(Resource):
 		db.session.commit()
 		
 		return {"Tikkie paid": "Succes"}
+
 
 api.add_resource(LogIn, "/login")
 api.add_resource(ChangePassword, "/changepass")

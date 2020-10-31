@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
+	<meta name="author" content="">
+	<meta name="description" content="">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+	<link rel="stylesheet" type="text/css" href="tikkieblok.css">
+	<title>tikkieblok</title>
+</head>
+<body>
+<div class="container">
+  <div class="child">Child</div>
+  <div class="child">Child</div>
+  <div class="child">Child</div>
+</div>
+<style type="text/css">
+	.container {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  background: #e2eaf4;
+  padding: 10px;
+}
+
+.child {
+  display: inline-block;
+  font-family: "Open Sans", Arial;
+  font-size: 20px;
+  color: #FFF;
+  text-align: center;
+  background: #3794fe;
+  border-radius: 6px;
+  padding: 20px;
+  margin: 12px;
+}
+
+.child:first-child {
+  width: 100%;
+}
+
+.child:not(:first-child) {
+  flex: 1;
+}
+</style>
+</body>
+</html>

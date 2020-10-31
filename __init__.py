@@ -58,12 +58,13 @@ class LogIn(Resource):
 		args = login_post_args.parse_args()
 		name, password = args["name"], hash_password(args["password"])
 
+    
 		user = User.query.filter_by(name=name).filter_by(password=password).first()
 
 		if user is None:
-			return {"Authorization error": "Bad credentials"}, 403
-		return json.dumps(dict(name=user.name, password=user.password)), 200
-
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
+		return json.dumps(dict(name=user.name, password=user.password)), 200, {"Access-Control-Allow-Origin": "*"}
+  
 
 class ChangePassword(Resource):
 	def put(self):
@@ -71,17 +72,17 @@ class ChangePassword(Resource):
 		name, oldpass, newpass, newpass1 = args["name"], args["oldpass"], args["newpass"], args["newpass1"]
 
 		if newpass != newpass1:
-			return {"Authorization error": "New passwords are not the same!"}, 403
+			return {"Authorization error": "New passwords are not the same!"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		user = User.query.filter_by(name=name).filter_by(password=hash_password(oldpass)).first()
 
 		if user is None:
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		user.password = hash_password(newpass)
 		db.session.commit()
 
-		return {"Password change": "Succes"}, 200
+		return {"Password change": "Succes"}, 200, {"Access-Control-Allow-Origin": "*"}
 
 
 class AddTikkie(Resource):
@@ -91,18 +92,18 @@ class AddTikkie(Resource):
 		t_name, t_url, t_payers = args["tikkiename"], args["url"], args["payers"].split(",")
 
 		if User.query.filter_by(name=name).filter_by(password=hash_password(password)).first() is None:
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
+
 
 		users = map(lambda user: user.name, User.query.all())
 
 		if set(t_payers) & set(users) != set(t_payers):
-			return {"Bad request": "Not all payers are users"}, 400
 
 		tikkie = Tikkie(creator=name, description=t_name, url=t_url, unpaid=",".join(t_payers))
 		db.session.add(tikkie)
 		db.session.commit()
 
-		return {"success": True, "id": tikkie.id}, 201
+		return {"success": True, "id": tikkie.id}, 201, {"Access-Control-Allow-Origin": "*"}
 
 
 class Payed(Resource):
@@ -111,12 +112,12 @@ class Payed(Resource):
 		name, password, t_id = args["name"], args["password"], args["tikkieid"]
 
 		if User.query.filter_by(name=name).filter_by(password=hash_password(password)).first() is None:
-			return {"Authorization error": "Bad credentials"}, 403
+			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
 
 		try:
 			t_id = int(t_id)
 		except ValueError:
-			return {"Error": "Tikkie_id not convertable to int"}, 400
+			return {"Error": "Tikkie_id not convertable to int"}, 400, {"Access-Control-Allow-Origin": "*"}
 
 		tikkie = Tikkie.query.filter_by(id=t_id).first()
 
@@ -127,7 +128,7 @@ class Payed(Resource):
 		unpaid = tikkie.unpaid.split(",")
 
 		if name not in unpaid:
-			return {"Exception": "Tikkie already paid!"}, 202
+			return {"Exception": "Tikkie already paid!"}, 202, {"Access-Control-Allow-Origin": "*"}
 
 		paid.append(name)
 		tikkie.paid = ",".join(paid)
@@ -136,7 +137,7 @@ class Payed(Resource):
 		tikkie.unpaid = ",".join(unpaid)
 
 		db.session.commit()
-		
+    
 		return {"Tikkie paid": "Succes"}
 
 

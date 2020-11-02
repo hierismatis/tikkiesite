@@ -44,6 +44,7 @@ class Tikkie(db.Model):
 		self.unpaid = unpaid
 		self.amount = amount
 
+
 # tikkie = Tikkie("Vakantie", "David", "tikkie.nl/vakantie", None, "", ",".join(["wilco", "sander", "erik", "matthijs", "aron"])) 
 # db.session.add(tikkie)
 # db.session.commit()

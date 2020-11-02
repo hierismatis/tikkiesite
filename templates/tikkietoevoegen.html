@@ -1,0 +1,23 @@
+{%extends "blocks.html"%}
+{% block title %}
+Tikkie toevoegen
+{% endblock title %}
+{% block tikkietoevoegenstatus %}
+id="current"
+{% endblock tikkietoevoegenstatus %}
+
+{% block blokken%}
+	<div class="flex-container" id="tikkies">
+		<div class="tikkieblok">
+			<div class="tikkieinfo">
+				<form method="post">
+				<p><strong>Url:</strong><input type="text" name="url" placeholder="plak hier bericht van de tikkie" /></p>
+				<p><strong>Omschrijving: </strong><input type="text" name="description" placeholder="Waar is het tikkie voor?" /></p>
+				<p><strong>Betalers: </strong>{% for user in users %}<p><input type="checkbox" name="payers" value={{user}} > {{user}}</p>{% endfor %}</p>
+				<p><strong>Datum: </strong><input type="date" name="date"/></p>
+				<p><input type="submit" name="submit" value="Voeg Tikkie toe">
+				</form>				
+			</div>
+		</div>
+	</div>
+{% endblock blokken %}

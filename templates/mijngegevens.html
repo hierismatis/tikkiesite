@@ -1,0 +1,18 @@
+{%extends "blocks.html"%}
+{% block title %}
+Mijn gegevens
+{% endblock title %}
+{% block mijngegevensstatus %}
+id="current"
+{% endblock mijngegevensstatus %}
+
+{% block blokken%}
+	<div class="flex-container" id="tikkies">
+		<div class="tikkieblok">
+			<div class="tikkieinfo">
+				<p><strong>Naam: </strong>{{ name }}</p>
+
+				<p><button class="paybutton">Verander wachtwoord</button></p>
+			</div>
+		</div>
+{% endblock blokken %}

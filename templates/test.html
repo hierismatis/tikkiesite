@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -10,39 +10,42 @@
 	<title>tikkieblok</title>
 </head>
 <body>
-<div class="container">
-  <div class="child">Child</div>
-  <div class="child">Child</div>
-  <div class="child">Child</div>
-</div>
-<style type="text/css">
-	.container {
-  display: flex;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  background: #e2eaf4;
-  padding: 10px;
-}
-
-.child {
-  display: inline-block;
-  font-family: "Open Sans", Arial;
-  font-size: 20px;
-  color: #FFF;
-  text-align: center;
-  background: #3794fe;
-  border-radius: 6px;
-  padding: 20px;
-  margin: 12px;
-}
-
-.child:first-child {
-  width: 100%;
-}
-
-.child:not(:first-child) {
-  flex: 1;
-}
-</style>
+<form method="post">
+<input type="checkbox" name="hello" value="world" >
+<input type="checkbox" name="hello" value="davidism" >
+<input type="submit">
+</form>
 </body>
-</html>
+</html> -->
+{%extends "blocks.html"%}
+{% block title %}
+hoi
+{% endblock title %}
+{% block mijntikkiesstatus %}
+id="current"
+{% endblock mijntikkiesstatus %}
+
+{% block blokken%}
+<div class="flex-container" id="tikkies">
+    {% if tikkies %}
+    {% for tikkie in tikkies %}
+    <div class="tikkieblok">
+      <div class="tikkieinfo">
+        <p><strong>Naam: </strong>{{ tikkie.creator }}</p>
+        <p><strong>Omschrijving: </strong>{{ tikkie.description }}</p>
+        <p><strong>Betaald: </strong>{% for name in tikkie.paid %} {{ name }} {% endfor %}</p>
+        <p><strong>Niet Betaald: </strong>{% for name in tikkie.unpaid %} {{ name }} {% endfor %}</p>
+        <p><strong>Datum: </strong>{{ tikkie.date }}</p>
+        <p><button class="paybutton">Betaal</button>    <button class="paybutton">Ik heb betaald</button></p>
+      </div>
+    </div>
+    {% endfor %}
+    {% else %}
+    <div class="tikkieblok">
+      <div class="tikkieinfo">
+        <p><strong>Er zijn geen tikkies gevonden.</strong></p>
+      </div">
+    </div>
+    {% endif %}
+  </div>
+{% endblock blokken %}

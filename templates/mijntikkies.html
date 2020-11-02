@@ -1,0 +1,33 @@
+{%extends "blocks.html"%}
+{% block title %}
+Mijn tikkies
+{% endblock title %}
+{% block mijntikkiesstatus %}
+id="current"
+{% endblock mijntikkiesstatus %}
+
+{% block blokken%}
+	<div class="flex-container" id="tikkies">
+		{% if tikkies %}
+		{% for tikkie in tikkies %}
+		<div class="tikkieblok">
+			<div class="tikkieinfo">
+				<p><strong>Naam: </strong>{{ tikkie.creator }}</p>
+				<p><strong>Omschrijving: </strong>{{ tikkie.description }}</p>
+				<p><strong>Bedrag: </strong>{{ tikkie.amount }}</p>
+				<p><strong>Betaald: </strong>{% for name in tikkie.paid %} {{ name }} {% endfor %}</p>
+				<p><strong>Niet Betaald: </strong>{% for name in tikkie.unpaid %} {{ name }} {% endfor %}</p>
+				<p><strong>Datum: </strong>{{ tikkie.date }}</p>
+				<p><button class="paybutton">Betaal</button>    <button class="paybutton">Ik heb betaald</button></p>
+			</div>
+		</div>
+		{% endfor %}
+		{% else %}
+		<div class="tikkieblok">
+			<div class="tikkieinfo">
+				<p><strong>Er zijn geen tikkies gevonden.</strong></p>
+			</div">
+		</div>
+		{% endif %}
+	</div>
+{% endblock blokken %}

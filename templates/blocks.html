@@ -1,0 +1,30 @@
+{%extends "template.html"%}
+
+
+
+{% block content %}
+<link href="{{url_for('static', filename='homepage.css')}}" rel="stylesheet">
+<div class="content">
+	<div id="side-bar" class="flex-container">
+		<div>
+			<p class="button" {% block homepagestatus%}{% endblock %}><a href="{{ url_for('homepage') }}">Home</a></p>
+			<hr>
+			<p class="button" {% block mijntikkiesstatus%}{% endblock %}><a href="{{ url_for('mijntikkies') }}">Mijn tikkies</a></p>
+			<hr>
+			<p class="button" {% block alletikkiesstatus%}{% endblock %}><a href="{{ url_for('alletikkies') }}">Alle tikkies</a></p>
+			<hr>
+			<p class="button" {% block mijngegevensstatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Mijn gegevens</a></p>
+			<hr>
+			<p class="button" {% block tikkietoevoegenstatus%}{% endblock %}><a href="{{ url_for('tikkietoevoegen') }}">Tikkie toevoegen</a></p>
+			<hr>
+			<p class="button" {% block hallofshamestatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Hall of shame</a></p>
+			<hr>
+			<p class="button"><a href="{{ url_for('loguit') }}">Log uit</a></p>
+		</div>
+	</div>
+	{% block blokken%}
+
+	{% endblock blokken %}
+</div>
+
+{% endblock content %}

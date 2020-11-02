@@ -1,8 +1,5 @@
 * {
 	font-family: Arial;
-/*	margin: 0px;
-	padding: 0px;*/
-
 }
 
 .content {
@@ -27,7 +24,7 @@
 	background-color: #d3d3d3;
 	border-radius: 15px;
 	margin: 20px;
-	
+
 }
 
 .tikkieinfo {
@@ -43,13 +40,13 @@
 .button {
 	padding: 10px;
 	margin: 0px;
-	border: solid 1px white; 
-	border-radius: 5px;
+	border: solid 1px white;
+	/* border-radius: 5px; */
 }
 
-.button:active {
+.button:active, #current {
 	background-color: #d3d3d3;
-	border: solid 1px black; 
+	border: solid 1px black;
 	border-radius: 15px;
 }
 
@@ -61,4 +58,19 @@ hr {
 a {
   color: black;
   text-decoration: none;
+}
+
+.paybutton {
+	padding: 10px;
+	margin: 0px;
+	border: solid 1px white;
+	border-radius: 5px;
+	background-color: white;
+	border: solid 1px black;
+	border-radius: 15px;
+}
+.paybutton:active {
+ background-color: #d3d3d3;
+ border: solid 1px black;
+ border-radius: 15px;
 }

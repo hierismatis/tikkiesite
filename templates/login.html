@@ -1,5 +1,12 @@
 {%extends "template.html"%}
+
+{% block title %}
+Login
+{% endblock title%}
+
 {% block content %}
+<center>
+<link href="{{url_for('static', filename='login.css')}}" rel="stylesheet">
 <form action="#" method="post">
   <p>naam:</p>
   <p><input type="text" name="name"/></p>
@@ -9,7 +16,7 @@
 </form>
 
 <ul id="list"></ul>
-
+</center>
 <script type="text/javascript">
 	if ("{{falsepw}}" == "1") {
 		$("#list").append("<li style='color:red'>Verkeerde inloggegevens, probeer opnieuw!</li>")

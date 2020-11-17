@@ -7,24 +7,28 @@
 <div class="content">
 	<div id="side-bar" class="flex-container">
 		<div>
-			<p class="button" {% block homepagestatus%}{% endblock %}><a href="{{ url_for('homepage') }}">Home</a></p>
+			<p class="button" data-url="/homepage" {% block homepagestatus%}{% endblock %}><a href="{{ url_for('homepage') }}">Home</a></p>
 			<hr>
-			<p class="button" {% block mijntikkiesstatus%}{% endblock %}><a href="{{ url_for('mijntikkies') }}">Mijn tikkies</a></p>
+			<p class="button" data-url="/mijntikkies" {% block mijntikkiesstatus%}{% endblock %}><a href="{{ url_for('mijntikkies') }}">Mijn tikkies</a></p>			
 			<hr>
-			<p class="button" {% block alletikkiesstatus%}{% endblock %}><a href="{{ url_for('alletikkies') }}">Alle tikkies</a></p>
+			<p class="button" data-url="/tikkietoevoegen" {% block tikkietoevoegenstatus%}{% endblock %}><a href="{{ url_for('tikkietoevoegen') }}">Tikkie toevoegen</a></p>
 			<hr>
-			<p class="button" {% block mijngegevensstatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Mijn gegevens</a></p>
+			<p class="button" data-url="/alletikkies" {% block alletikkiesstatus%}{% endblock %}><a href="{{ url_for('alletikkies') }}">Alle tikkies</a></p>
 			<hr>
-			<p class="button" {% block tikkietoevoegenstatus%}{% endblock %}><a href="{{ url_for('tikkietoevoegen') }}">Tikkie toevoegen</a></p>
+			<p class="button" data-url="/mijngegevens" {% block mijngegevensstatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Mijn gegevens</a></p>
 			<hr>
-			<p class="button" {% block hallofshamestatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Hall of shame</a></p>
+			<p class="button" data-url="/mijngegevens" {% block hallofshamestatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Hall of shame</a></p>
 			<hr>
-			<p class="button"><a href="{{ url_for('loguit') }}">Log uit</a></p>
+			<p class="button" data-url="/loguit"><a href="{{ url_for('loguit') }}">Log uit</a></p>
 		</div>
 	</div>
 	{% block blokken%}
 
 	{% endblock blokken %}
 </div>
-
+<script type="text/javascript">
+	$(".button").click(function(){
+		window.location.href = $(this).data("url");
+	})
+</script>
 {% endblock content %}

@@ -1,4 +1,4 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html>
 <head>
 	<meta charset="utf-8">
@@ -10,14 +10,25 @@
 	<title>tikkieblok</title>
 </head>
 <body>
-<form method="post">
-<input type="checkbox" name="hello" value="world" >
-<input type="checkbox" name="hello" value="davidism" >
-<input type="submit">
-</form>
+  <pre>
+<input type="text" id="input" name="0">    hoiik ben matthijs
+<input type="text" id="amount" name="1">
+<input type="text" id="url" name="2">
+</pre>
+
+<script type="text/javascript">
+  $("#input").change(function(){
+    let val = $("#input").val();
+    console.log(val)
+    console.log(val.match(/€ ?(\d+[,\.]\d{2}).+\n?.*(https:\/\/[\w\d\.]+.*?.+=[\w\d\-_]+)/))
+    let data = val.match(/€ ?(\d+[,\.]\d{2}).+\n?.*(https:\/\/[\w\d\.]+.*?.+=[\w\d\-_]+)/)
+    $("#amount").val(data[1])
+    $("#url").val(data[2])
+}); 
+</script>
 </body>
-</html> -->
-{%extends "blocks.html"%}
+</html>
+<!-- {%extends "blocks.html"%}
 {% block title %}
 hoi
 {% endblock title %}
@@ -47,5 +58,5 @@ id="current"
       </div">
     </div>
     {% endif %}
-  </div>
-{% endblock blokken %}
+  </div> -->
+<!-- {% endblock blokken %} -->

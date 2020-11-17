@@ -4,12 +4,13 @@ from flask import Flask, escape, request, render_template, url_for, flash, redir
 from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
 from backendfunctions import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "6810527e5f4636beca705e70625e96bc"
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///database.sqlite"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+app.permanent_session_lifetime = timedelta(weeks=52)
 api = Api(app)
 db = SQLAlchemy(app)
 
@@ -45,8 +46,10 @@ class Tikkie(db.Model):
 		self.amount = amount
 
 
-# tikkie = Tikkie("Vakantie", "David", "tikkie.nl/vakantie", None, "", ",".join(["wilco", "sander", "erik", "matthijs", "aron"])) 
-# db.session.add(tikkie)
+
+
+# tikkie = Tikkie.query.filter_by(creator="David").first()
+# db.session.delete(tikkie)
 # db.session.commit()
 
 ###########################################################################
@@ -73,9 +76,10 @@ def login():
 			return redirect(url_for("homepage"))
 
 		else:
-			return render_template('login.html', falsepw=1)
+			flash("Inlog gegevens kloppen niet!")
+			return redirect(url_for('login'))
 
-	return render_template('login.html', falsepw=0)
+	return render_template('login.html')
 
 @app.route("/homepage")
 def homepage():
@@ -92,7 +96,7 @@ def homepage():
 	if tikkies:
 		tikkiejson = []
 		for tikkie in reversed(tikkies):
-			tikkiejson.append({"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%d/%m/%Y") })
+			tikkiejson.append({"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%Y-%m-%d")})
 	else:
 		tikkiejson = None
 
@@ -100,19 +104,26 @@ def homepage():
 
 @app.route("/mijntikkies")
 def mijntikkies():
+	try:
+		if User.query.filter_by(name=session["name"]).filter_by(password=session["password"]).first():
+			pass
+	except Exception:
+		flash("Log eerst in", "info")
+		return redirect(url_for("login"))
 
 	name = session["name"]
-
 
 	tikkies = Tikkie.query.filter_by(creator=name).all()
 	if tikkies:
 		tikkiejson = []
 		for tikkie in reversed(tikkies):
-			tikkiejson.append({"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%d/%m/%Y") })
+			tikkiejson.append({"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%Y-%m-%d")})
 	else:
 		tikkiejson = None
 
 	return render_template("mijntikkies.html", tikkies=tikkiejson)
+
+
 
 @app.route("/alletikkies")
 def alletikkies():
@@ -128,11 +139,14 @@ def alletikkies():
 	if tikkies:
 		tikkiejson = []
 		for tikkie in reversed(tikkies):
-			tikkiejson.append({"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%d/%m/%Y") })
+			tikkiejson.append({"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%Y-%m-%d")})
 	else:
 		tikkiejson = None
 
 	return render_template("alletikkies.html", tikkies=tikkiejson)
+
+
+
 
 @app.route("/mijngegevens")
 def mijngegevens():
@@ -155,26 +169,106 @@ def tikkietoevoegen():
 
 
 	if request.method == "POST":
+		amount = float(request.form["amount"].replace(",", "."))
 		url = request.form["url"]
-
 		description = request.form["description"]
 		payers = ",".join(request.form.getlist('payers'))
 		date = request.form["date"].split("-")
 		date = datetime(int(date[0]), int(date[1]), int(date[2]))
 
-		return f"{str(payers)}\n{str(date)}\n{str(description)}"
+		tikkie = Tikkie(description, session['name'], url, date, "", payers, amount) 
+		db.session.add(tikkie)
+		db.session.commit()
+		flash("Tikkie succesvol toegevoegd!")
+		return redirect(url_for("mijntikkies"))
 	users = User.query.all()
 	users = [user.name for user in users]
-
+	
 	return render_template("tikkietoevoegen.html", users=users)
 
+@app.route("/betaal")
+def betaal():
+	try:
+		if User.query.filter_by(name=session["name"]).filter_by(password=session["password"]).first():
+			pass
+	except Exception:
+		return redirect(url_for("login"))
+	t_id = request.args.get('id', default=-1, type = int)
+
+	if t_id == -1:
+		return "dikke pech"
+	tikkie = Tikkie.query.filter_by(id=int(t_id)).first()
+
+	unpaid = tikkie.unpaid.split(",")
+	paid = tikkie.paid.split(",")
+
+	if session["name"] in unpaid:
+		unpaid.remove(session["name"])
+		paid.append(session["name"])
+	tikkie.unpaid = ",".join(unpaid)
+	tikkie.paid = ",".join(paid)
+	db.session.commit()
+	flash(f"Je hebt de tikkie voor {tikkie.description} betaald!")
+	return redirect(url_for("homepage"))
+
+@app.route("/verwijderen")
+def verwijderen():
+	try:
+		if User.query.filter_by(name=session["name"]).filter_by(password=session["password"]).first():
+			pass
+	except Exception:
+		return redirect(url_for("login"))
+	t_id = request.args.get('id', default=-1, type = int)
+
+	if t_id == -1:
+		return "dikke pech"
+	tikkie = Tikkie.query.filter_by(id=int(t_id)).first()
+	db.session.delete(tikkie)
+	db.session.commit()
+	flash(f"De tikkie is succesvol verwijderd!", "info")
+	return redirect(url_for("mijntikkies"))
+
+@app.route("/aanpassen", methods=["POST", "GET"])
+def aanpassen():
+	try:
+		if User.query.filter_by(name=session["name"]).filter_by(password=session["password"]).first():
+			pass
+	except Exception:
+		return redirect(url_for("login"))
+	t_id = request.args.get('id', default=-1, type = int)
+
+	if t_id == -1:
+		return "dikke pech"
+	tikkie = Tikkie.query.filter_by(id=int(t_id)).first()
+
+	if request.method == "POST":
+		amount = float(request.form["amount"].replace(",", "."))
+		url = request.form["url"]
+		description = request.form["description"]
+		payers = ",".join(request.form.getlist('payers'))
+		date = request.form["date"].split("-")
+		date = datetime(int(date[0]), int(date[1]), int(date[2]))
+		paid = "".join([paid for paid in tikkie.paid.split(',') if paid not in payers.split(",")])
+
+
+		tikkie.description, tikkie.url, tikkie.date, tikkie.unpaid, tikkie.amount, tikkie.paid = description, url, date, payers, amount, paid
+		db.session.commit()
+		flash("Tikkie succesvol aangepast!")
+		return redirect(url_for("mijntikkies"))
+
+	users = User.query.all()
+	users = [user.name for user in users]
+	tikkiejson = {"amount": tikkie.amount, "id": tikkie.id, "description": tikkie.description, "paid": tikkie.paid.split(","), "unpaid": tikkie.unpaid.split(","), "creator": tikkie.creator, 'url': tikkie.url, "date": tikkie.date.strftime("%Y-%m-%d")}
+	return render_template("aanpassen.html", tikkie=tikkiejson, users=users)
 
 @app.route("/loguit")
 def loguit():
 	try:
 		session.pop("name", None)
 		session.pop("password", None)
+		flash("Je bent uitgelogd!", "info")
 	except Exception:
+		flash("Je bent niet succesvol uitgelogd!", "info")
 		pass
 	return redirect(url_for("login"))
 
@@ -299,4 +393,5 @@ api.add_resource(AddTikkie, "/api/addtikkie")
 api.add_resource(Payed, "/api/pay")
 
 if __name__ == "__main__":
+
 	app.run(debug=True)

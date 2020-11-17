@@ -7,19 +7,21 @@ Login
 {% block content %}
 <center>
 <link href="{{url_for('static', filename='login.css')}}" rel="stylesheet">
+{% with messages = get_flashed_messages() %}
+  	{% if messages %}
+  		{% for msg in messages %}
+  			<p>{{ msg }}</p>
+  		{% endfor %}
+  	{% endif %}
+{% endwith %}
+
 <form action="#" method="post">
-  <p>naam:</p>
-  <p><input type="text" name="name"/></p>
-  <p>wachtwoord:</p>
-  <p><input type="password" name="pw"/></p>
-  <p><input type="submit" value="submit"/></p>
+	<p>naam:</p>
+	<p><input type="text" name="name"/></p>
+	<p>wachtwoord:</p>
+	<p><input type="password" name="pw"/></p>
+	<p><input type="submit" value="submit"/></p>
 </form>
 
-<ul id="list"></ul>
 </center>
-<script type="text/javascript">
-	if ("{{falsepw}}" == "1") {
-		$("#list").append("<li style='color:red'>Verkeerde inloggegevens, probeer opnieuw!</li>")
-	}
-</script>
 {% endblock content %}

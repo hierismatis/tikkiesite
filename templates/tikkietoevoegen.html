@@ -11,13 +11,25 @@ id="current"
 		<div class="tikkieblok">
 			<div class="tikkieinfo">
 				<form method="post">
-				<p><strong>Url:</strong><input type="text" name="url" placeholder="plak hier bericht van de tikkie" /></p>
+				<p><strong>Deel bericht:</strong><input type="text" id="message" name="message" placeholder="plak hier bericht van de tikkie" /></p>
+				<p><strong>Bedrag:</strong><input type="text" id="amount" name="amount" placeholder="plak hier bericht van de tikkie" /></p>
+				<p><strong>Url:</strong><input type="text" id="url" name="url" placeholder="plak hier bericht van de tikkie" /></p>
 				<p><strong>Omschrijving: </strong><input type="text" name="description" placeholder="Waar is het tikkie voor?" /></p>
 				<p><strong>Betalers: </strong>{% for user in users %}<p><input type="checkbox" name="payers" value={{user}} > {{user}}</p>{% endfor %}</p>
 				<p><strong>Datum: </strong><input type="date" name="date"/></p>
-				<p><input type="submit" name="submit" value="Voeg Tikkie toe">
+				<p><input class="paybutton" type="submit" name="submit" value="Voeg tikkie toe">
 				</form>				
 			</div>
 		</div>
 	</div>
+	<script type="text/javascript">
+  	$("#message").change(function(){
+    let val = $("#message").val();
+	    console.log(val)
+	    console.log(val.match(/€ ?(\d+[,\.]\d{2}).+\n?.*(https:\/\/[\w\d\.]+.*?.+=[\w\d\-_]+)/))
+	    let data = val.match(/€ ?(\d+[,\.]\d{2}).+\n?.*(https:\/\/[\w\d\.]+.*?.+=[\w\d\-_]+)/)
+	    $("#amount").val(data[1])
+	    $("#url").val(data[2])
+	}); 
+	</script>
 {% endblock blokken %}

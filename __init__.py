@@ -1,5 +1,3 @@
-import json
-import re
 from flask import Flask, escape, request, render_template, url_for, flash, redirect, session
 from flask_restful import Api, Resource, reqparse
 from flask_sqlalchemy import SQLAlchemy
@@ -279,7 +277,7 @@ class ApiLogin(Resource):
 
 		if user is None:
 			return {"Authorization error": "Bad credentials"}, 403, {"Access-Control-Allow-Origin": "*"}
-		return json.dumps(dict(name=user.name, password=user.password)), 200, {"Access-Control-Allow-Origin": "*"}
+		return {"login": "succes"}, 200, {"Access-Control-Allow-Origin": "*"}
 
 
 class ChangePassword(Resource):

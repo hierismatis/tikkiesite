@@ -1,0 +1,37 @@
+{%extends "blocks.html"%}
+{% block title %}
+Verander wachtwoord
+{% endblock title %}
+{% block mijngegevensstatus %}
+id="current"
+{% endblock mijngegevensstatus %}
+
+{% block blokken%}
+
+<div class="flex-container" id="tikkies">
+	{% with messages = get_flashed_messages() %}
+	  	{% if messages %}
+	  		{% for msg in messages %}
+		  		<div class="tikkieblok msg">
+					<div class="tikkieinfo">
+						<p class="msg">{{ msg }}</p>
+					</div>
+				</div>
+	  		{% endfor %}
+	  	{% endif %}
+	{% endwith %}
+	<div class="tikkieblok">
+		<div class="tikkieinfo">
+			<form action="#" method="post">
+				<p class="label">Oud-wachtwoord</p>
+				<p><input class="input" type="password" name="oldpw"/></p>
+				<p class="label">Niew wachtwoord</p>
+				<p><input class="input" type="password" name="newpw"/></p>
+				<p class="label">Herhaal niew wachtwoord</p>
+				<p><input class="input" type="password" name="repnewpw"/></p>
+				<p><input class="input paybutton" type="submit" value="Verander wachtwoord"/></p>
+			</form>
+		</div>
+	</div>
+</div>
+{% endblock blokken %}

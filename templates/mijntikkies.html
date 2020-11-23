@@ -11,7 +11,7 @@ id="current"
 		{% with messages = get_flashed_messages() %}
 		  	{% if messages %}
 		  		{% for msg in messages %}
-		  			<div class="tikkieblok">
+		  			<div class="tikkieblok msg">
 						<div class="tikkieinfo">
 							<p>{{ msg }}</p>
 						</div>
@@ -36,12 +36,15 @@ id="current"
 		{% else %}
 		<div class="tikkieblok">
 			<div class="tikkieinfo">
-				<p><strong>Er zijn geen tikkies gevonden.</strong></p>
+				<p><strong>Je hebt momenteel geen openstaande tikkies.</strong></p>
 			</div">
 		</div>
 		{% endif %}
 	</div>
 	<script type="text/javascript">
+	setTimeout(function(){ 
+		$(".msg").slideUp()
+    }, 5000);
 	$(".delete").click(function(){
 		let id = $(this).data("tikkieid");
 		console.log(id);

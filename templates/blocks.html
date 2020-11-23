@@ -7,19 +7,33 @@
 <div class="content">
 	<div id="side-bar" class="flex-container">
 		<div>
-			<p class="button" data-url="/homepage" {% block homepagestatus%}{% endblock %}><a href="{{ url_for('homepage') }}">Home</a></p>
+			<p class="button" data-url="/homepage" {% block homepagestatus%}{% endblock %}>
+				<a href="{{ url_for('homepage') }}">Home</a>
+			</p>
 			<hr>
-			<p class="button" data-url="/mijntikkies" {% block mijntikkiesstatus%}{% endblock %}><a href="{{ url_for('mijntikkies') }}">Mijn tikkies</a></p>			
+			<p class="button" data-url="/mijntikkies" {% block mijntikkiesstatus%}{% endblock %}>
+				<a href="{{ url_for('mijntikkies') }}">Mijn tikkies</a>
+			</p>			
 			<hr>
-			<p class="button" data-url="/tikkietoevoegen" {% block tikkietoevoegenstatus%}{% endblock %}><a href="{{ url_for('tikkietoevoegen') }}">Tikkie toevoegen</a></p>
+			<p class="button" data-url="/tikkietoevoegen" {% block tikkietoevoegenstatus%}{% endblock %}>
+				<a href="{{ url_for('tikkietoevoegen') }}">Toevoegen</a>
+			</p>
 			<hr>
-			<p class="button" data-url="/alletikkies" {% block alletikkiesstatus%}{% endblock %}><a href="{{ url_for('alletikkies') }}">Alle tikkies</a></p>
+			<p class="button" data-url="/alletikkies" {% block alletikkiesstatus%}{% endblock %}>
+				<a href="{{ url_for('alletikkies') }}">Alle tikkies</a>
+			</p>
 			<hr>
-			<p class="button" data-url="/mijngegevens" {% block mijngegevensstatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Mijn gegevens</a></p>
+			<p class="button" data-url="/mijngegevens" {% block mijngegevensstatus%}{% endblock %}>
+				<a href="{{ url_for('mijngegevens') }}">Gegevens</a>
+			</p>
 			<hr>
-			<p class="button" data-url="/mijngegevens" {% block hallofshamestatus%}{% endblock %}><a href="{{ url_for('mijngegevens') }}">Hall of shame</a></p>
+			<p class="button" data-url="/hallofshame" {% block hallofshamestatus%}{% endblock %}>
+				<a href="{{ url_for('hallofshame') }}">Hall of shame</a>
+			</p>
 			<hr>
-			<p class="button" data-url="/loguit"><a href="{{ url_for('loguit') }}">Log uit</a></p>
+			<p class="button" data-url="/loguit">
+				<a href="{{ url_for('loguit') }}">Log uit</a>
+			</p>
 		</div>
 	</div>
 	{% block blokken%}

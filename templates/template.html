@@ -4,15 +4,22 @@
 <head>
 	<meta charset="utf-8">
 	<title>{% block title %}{% endblock title %}</title>
+	<link rel="icon" href="{{url_for('static', filename='logo.png')}}">
 	<meta name="author" content="">
 	<meta name="description" content="">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<link href="{{url_for('static', filename='style.css')}}" rel="stylesheet">
+	<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+	{% block link %}{% endblock link %}
 </head>
 
 <body>
 {% block content %}{% endblock content %}
 </body>
-
+<script type="text/javascript">
+	setTimeout(function(){ 
+		$(".msg").slideUp()
+    }, 5000);
+</script>
 </html>

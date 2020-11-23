@@ -11,11 +11,11 @@ id="current"
 		<div class="tikkieblok">
 			<div class="tikkieinfo">
 				<form method="post">
-				<p><strong>Deel bericht:</strong><input type="text" id="message" name="message" placeholder="plak hier bericht van de tikkie" /></p>
-				<p><strong>Bedrag:</strong><input type="text" id="amount" value="{{ tikkie.amount }}" name="amount" placeholder="plak hier bericht van de tikkie" /></p>
-				<p><strong>Url:</strong><input type="text" id="url" value="{{ tikkie.url }}" name="url" placeholder="plak hier bericht van de tikkie" /></p>
+				<p><strong>Deel bericht:</strong><input type="text" id="message" name="message" placeholder="plak hier het bericht van de tikkie" /></p>
+				<p><strong>Bedrag:</strong><input type="text" id="amount" value="{{ tikkie.amount }}" name="amount" placeholder="plak hier het bedrag van de tikkie" /></p>
+				<p><strong>Url:</strong><input type="text" id="url" value="{{ tikkie.url }}" name="url" placeholder="plak hier de url van de tikkie" /></p>
 				<p><strong>Omschrijving: </strong><input type="text" value="{{ tikkie.description }}" name="description" placeholder="Waar is het tikkie voor?" /></p>
-				<p><strong>Betalers: </strong>{% for user in users %}<p><input type="checkbox" name="payers" value={{user}} {% if user in tikkie.unpaid %} checked{% endif %}> {{user}}</p>{% endfor %}</p>
+				<p><strong>Betalers: </strong>{% for user in users %}<p><input type="checkbox" name="payers" value={{user.lower}} {% if user in tikkie.unpaid %} checked{% endif %}> {{user.capital}}</p>{% endfor %}</p>
 				<p><strong>Datum: </strong><input type="date" value="{{ tikkie.date }}"name="date"/></p>
 				<p><input class="paybutton" type="submit" name="submit" value="Pas tikkie aan">
 				</form>				

@@ -1,5 +1,5 @@
 * {
-	font-family: Arial;
+	font-family: "Helvetica";
 }
 
 .content {
@@ -9,7 +9,6 @@
 }
 
 #side-bar {
-
 	flex: 1;
 
 }
@@ -21,10 +20,15 @@
 .tikkieblok {
 	border: solid 3px;
 	border-color: #000000;
-	background-color: #d3d3d3;
+	background-color: #302D30;
 	border-radius: 15px;
 	margin: 20px;
+	color: #FFFFFF;
 
+}
+
+.tikkieblok strong {
+	color: #D4D0D3;
 }
 
 .tikkieinfo {
@@ -40,13 +44,12 @@
 .button {
 	padding: 10px;
 	margin: 0px;
-	border: solid 1px white;
 	/* border-radius: 5px; */
 }
 
 .button:active, #current {
-	background-color: #d3d3d3;
-	border: solid 1px black;
+	background-color: #B5B2B6;
+/*	border: solid 1px black;*/
 	border-radius: 15px;
 }
 
@@ -68,9 +71,34 @@ a {
 	background-color: white;
 	border: solid 1px black;
 	border-radius: 15px;
+	background-color: #B5B2B6;
 }
 .paybutton:active {
- background-color: #d3d3d3;
+ background-color: #000000;
  border: solid 1px black;
  border-radius: 15px;
+}
+
+input[type=text] {
+	padding: 3px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	color: #000000;
+	background-color: #B5B2B6;
+}
+
+input[type=date]{
+	padding: 3px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	color: #000000;
+	background-color: #B5B2B6;
+}
+
+input[type=password] {
+	padding: 3px;
+	border: 1px solid #000000;
+	border-radius: 5px;
+	color: #000000;
+	background-color: #B5B2B6;
 }

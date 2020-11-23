@@ -4,4 +4,22 @@
 
 body{
   margin: auto;
+  background-color: #252325; 
+}
+
+.button a {
+	color: #D4D0D3;
+	font-weight: 400;
+}
+
+#current a {
+	color: #000000;
+	justify-content: center;
+}
+#current {
+	display: block;
+	margin-left: auto;
+	margin-right: auto;
+/*	display: flex;
+	align-content: center;*/
 }

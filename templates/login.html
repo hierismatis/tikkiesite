@@ -4,24 +4,36 @@
 Login
 {% endblock title%}
 
+{% block link %}
+<link href="{{url_for('static', filename='login.css')}}" rel="stylesheet">
+{% endblock link %}
+
 {% block content %}
 <center>
-<link href="{{url_for('static', filename='login.css')}}" rel="stylesheet">
 {% with messages = get_flashed_messages() %}
   	{% if messages %}
   		{% for msg in messages %}
-  			<p>{{ msg }}</p>
+	  		<div class="tikkieblok msg">
+				<div class="tikkieinfo">
+					<p class="msg">{{ msg }}</p>
+				</div>
+			</div>
   		{% endfor %}
   	{% endif %}
 {% endwith %}
 
 <form action="#" method="post">
-	<p>naam:</p>
-	<p><input type="text" name="name"/></p>
-	<p>wachtwoord:</p>
-	<p><input type="password" name="pw"/></p>
-	<p><input type="submit" value="submit"/></p>
+	<p class="label">Naam</p>
+	<p><input class="input" type="text" name="name"/></p>
+	<p class="label">Wachtwoord</p>
+	<p><input class="input" type="password" name="pw"/></p>
+	<p><input class="input button" type="submit" value="Log in"/></p>
 </form>
 
 </center>
+<script type="text/javascript">
+	setTimeout(function(){ 
+		$(".msg").slideUp()
+    }, 5000);
+</script>
 {% endblock content %}

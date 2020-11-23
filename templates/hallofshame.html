@@ -2,9 +2,9 @@
 {% block title %}
 Mijn gegevens
 {% endblock title %}
-{% block mijngegevensstatus %}
+{% block hallofshamestatus %}
 id="current"
-{% endblock mijngegevensstatus %}
+{% endblock hallofshamestatus %}
 
 {% block blokken%}
 	<div class="flex-container" id="tikkies">
@@ -21,14 +21,6 @@ id="current"
 		{% endwith %}
 		<div class="tikkieblok">
 			<div class="tikkieinfo">
-				<p><strong>Naam: </strong>{{ name }}</p>
-
-				<p><button class="paybutton" id="pswchange">Verander wachtwoord</button></p>
-			</div>
+				<p>Er is nog geen hall of shame :-(, maar er word hard aan gewerkt!</p>
 		</div>
-	<script type="text/javascript">
-	$("#pswchange").click(function(){
-		window.location.href = "/wachtwoordveranderen"
-	})
-</script>
 {% endblock blokken %}

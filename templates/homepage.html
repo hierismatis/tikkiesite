@@ -11,7 +11,7 @@ id="current"
 		{% with messages = get_flashed_messages() %}
 		  	{% if messages %}
 		  		{% for msg in messages %}
-		  			<div class="tikkieblok">
+		  			<div class="tikkieblok msg">
 						<div class="tikkieinfo">
 							<p>{{ msg }}</p>
 						</div>
@@ -23,11 +23,33 @@ id="current"
 		{% for tikkie in tikkies %}
 		<div class="tikkieblok">
 			<div class="tikkieinfo">
+<!-- 				<p>
+					Naam: <div class="data">{{ tikkie.creator }}</div>
+				</p>
+				<p>
+					Omschrijving: <br>
+					<div class="data">{{ tikkie.description }}</div>
+				</p>
+				<p>
+					Bedrag:<div class="data"> €{{ tikkie.amount }}</div>
+				</p>
+				<p>
+					Betaald: <br>
+				{% for name in tikkie.paid %}<div class="data"> {{ name }} </div> {% endfor %}
+				</p>
+				<p>
+					Niet betaald: <br>
+				{% for name in tikkie.unpaid %}<div class="data"> {{ name }} </div> {% endfor %}
+				</p>
+				<p>
+					Datum: <div class="data">{{ tikkie.date }}</div>
+				</p>
+				<p><button class="pay paybutton" data-url="{{ tikkie.url }}">Betaal</button>    <button class="paybutton payed" data-tikkieid="{{tikkie.id}}">Ik heb betaald</button></p> -->
 				<p><strong>Naam: </strong>{{ tikkie.creator }}</p>
-				<p><strong>Omschrijving: </strong>{{ tikkie.description }}</p>
+				<p><strong>Omschrijving: </strong><br>{{ tikkie.description }}</p>
 				<p><strong>Bedrag: </strong>€{{ tikkie.amount }}</p>
-				<p><strong>Betaald: </strong>{% for name in tikkie.paid %} {{ name }} {% endfor %}</p>
-				<p><strong>Niet betaald: </strong>{% for name in tikkie.unpaid %} {{ name }} {% endfor %}</p>
+				<p><strong>Betaald: </strong><br>{% for name in tikkie.paid %} {{ name }} {% endfor %}</p>
+				<p><strong>Niet betaald: </strong><br>{% for name in tikkie.unpaid %} {{ name }} {% endfor %}</p>
 				<p><strong>Datum: </strong>{{ tikkie.date }}</p>
 				<p><button class="pay paybutton" data-url="{{ tikkie.url }}">Betaal</button>    <button class="paybutton payed" data-tikkieid="{{tikkie.id}}">Ik heb betaald</button></p>
 			</div>
@@ -36,12 +58,16 @@ id="current"
 		{% else %}
 		<div class="tikkieblok">
 			<div class="tikkieinfo">
-				<p><strong>Je bent up-to-date en heb alle tikkies betaald, lekker bezig!</strong></p>
+				<p><strong>Je bent up-to-date en heb alle tikkies betaald, lekker bezig {{ user }}!</strong></p>
 			</div">
 		</div>
 		{% endif %}
 	</div>
 	<script type="text/javascript">
+	setTimeout(function(){ 
+		$(".msg").slideUp()
+    }, 5000);
+
 	$(".pay").click(function(){
 		let url = $(this).data("url");
 		console.log(url);
@@ -58,6 +84,7 @@ id="current"
 			window.location.href = "/betaal?id=" + id
 		})
 	})
+
 	</script>
 {% endblock blokken %}
 

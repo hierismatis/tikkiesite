@@ -2,4 +2,4 @@ passwords.txt
 test.py
 __pycache__/
 templates/test.html
-database.sqlite
+database.sqlite3
